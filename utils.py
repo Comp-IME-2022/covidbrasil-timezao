@@ -18,9 +18,10 @@ def to_int(x):
 @st.cache(suppress_st_warning=True)
 def load_data(fname):
     data_load_state = st.text('Carregando dados...')
-    df = pd.read_excel(fname)
+    df = pd.read_csv(fname, sep=';')
     df.loc[df['regiao'].eq('Brasil'), 'estado'] = 'BR'
-    df['populacaoTCU2019'] = df['populacaoTCU2019'].apply(to_int).astype('Int64')
+    df['populacaoTCU2019'] = df['populacaoTCU2019'].astype('Int64')
+    df['data'] = df['data'].pipe(pd.to_datetime, errors='coerce')
     data_load_state.text("")
     return df
 
